@@ -1,0 +1,232 @@
+{
+    "services": [
+        {
+            "id": 813,
+            "name": "s0",
+            "cpu": 40,
+            "memory": 423,
+            "storage": 99,
+            "bandwidth": 17
+        },
+        {
+            "id": 688,
+            "name": "s1",
+            "cpu": 317,
+            "memory": 13,
+            "storage": 111,
+            "bandwidth": 18
+        },
+        {
+            "id": 689,
+            "name": "s2",
+            "cpu": 11,
+            "memory": 319,
+            "storage": 255,
+            "bandwidth": 14
+        },
+        {
+            "id": 451,
+            "name": "s3",
+            "cpu": 176,
+            "memory": 141,
+            "storage": 4,
+            "bandwidth": 17
+        },
+        {
+            "id": 607,
+            "name": "s4",
+            "cpu": 320,
+            "memory": 2,
+            "storage": 43,
+            "bandwidth": 18
+        },
+        {
+            "id": 913,
+            "name": "s5",
+            "cpu": 131,
+            "memory": 248,
+            "storage": 166,
+            "bandwidth": 18
+        },
+        {
+            "id": 536,
+            "name": "s6",
+            "cpu": 61,
+            "memory": 143,
+            "storage": 52,
+            "bandwidth": 20
+        },
+        {
+            "id": 408,
+            "name": "s7",
+            "cpu": 185,
+            "memory": 266,
+            "storage": 184,
+            "bandwidth": 18
+        },
+        {
+            "id": 297,
+            "name": "s8",
+            "cpu": 273,
+            "memory": 436,
+            "storage": 13,
+            "bandwidth": 18
+        },
+        {
+            "id": 479,
+            "name": "s9",
+            "cpu": 177,
+            "memory": 320,
+            "storage": 149,
+            "bandwidth": 17
+        },
+        {
+            "id": 123,
+            "name": "s10",
+            "cpu": 641,
+            "memory": 112,
+            "storage": 128,
+            "bandwidth": 17
+        },
+        {
+            "id": 900,
+            "name": "s11",
+            "cpu": 317,
+            "memory": 246,
+            "storage": 119,
+            "bandwidth": 17
+        },
+        {
+            "id": 312,
+            "name": "s12",
+            "cpu": 602,
+            "memory": 303,
+            "storage": 175,
+            "bandwidth": 19
+        },
+        {
+            "id": 906,
+            "name": "s13",
+            "cpu": 244,
+            "memory": 116,
+            "storage": 73,
+            "bandwidth": 16
+        },
+        {
+            "id": 167,
+            "name": "s14",
+            "cpu": 228,
+            "memory": 207,
+            "storage": 159,
+            "bandwidth": 16
+        }
+    ],
+    "applications": [
+        {
+            "name": "App12",
+            "services": [
+                813,
+                688,
+                689,
+                451,
+                607,
+                913,
+                536,
+                408,
+                297,
+                479,
+                123,
+                900,
+                312,
+                906,
+                167
+            ],
+            "choreography": [
+                {
+                    "source": 813,
+                    "target": 688,
+                    "payload": 326,
+                    "transmission_time": 9
+                },
+                {
+                    "source": 688,
+                    "target": 689,
+                    "payload": 381,
+                    "transmission_time": 9
+                },
+                {
+                    "source": 689,
+                    "target": 451,
+                    "payload": 69,
+                    "transmission_time": 5
+                },
+                {
+                    "source": 451,
+                    "target": 607,
+                    "payload": 323,
+                    "transmission_time": 5
+                },
+                {
+                    "source": 607,
+                    "target": 913,
+                    "payload": 177,
+                    "transmission_time": 7
+                },
+                {
+                    "source": 913,
+                    "target": 536,
+                    "payload": 219,
+                    "transmission_time": 9
+                },
+                {
+                    "source": 536,
+                    "target": 408,
+                    "payload": 272,
+                    "transmission_time": 9
+                },
+                {
+                    "source": 408,
+                    "target": 297,
+                    "payload": 95,
+                    "transmission_time": 8
+                },
+                {
+                    "source": 297,
+                    "target": 479,
+                    "payload": 410,
+                    "transmission_time": 7
+                },
+                {
+                    "source": 479,
+                    "target": 123,
+                    "payload": 56,
+                    "transmission_time": 9
+                },
+                {
+                    "source": 123,
+                    "target": 900,
+                    "payload": 282,
+                    "transmission_time": 8
+                },
+                {
+                    "source": 900,
+                    "target": 312,
+                    "payload": 426,
+                    "transmission_time": 8
+                },
+                {
+                    "source": 312,
+                    "target": 906,
+                    "payload": 421,
+                    "transmission_time": 6
+                },
+                {
+                    "source": 906,
+                    "target": 167,
+                    "payload": 456,
+                    "transmission_time": 6
+                }
+            ]
+        }
+    ]
+}

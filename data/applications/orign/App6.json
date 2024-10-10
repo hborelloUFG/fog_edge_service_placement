@@ -1,0 +1,127 @@
+{
+    "services": [
+        {
+            "id": 174,
+            "name": "s0",
+            "cpu": 343,
+            "memory": 442,
+            "storage": 112,
+            "bandwidth": 16
+        },
+        {
+            "id": 895,
+            "name": "s1",
+            "cpu": 588,
+            "memory": 49,
+            "storage": 113,
+            "bandwidth": 17
+        },
+        {
+            "id": 115,
+            "name": "s2",
+            "cpu": 7,
+            "memory": 178,
+            "storage": 122,
+            "bandwidth": 20
+        },
+        {
+            "id": 723,
+            "name": "s3",
+            "cpu": 206,
+            "memory": 359,
+            "storage": 46,
+            "bandwidth": 17
+        },
+        {
+            "id": 858,
+            "name": "s4",
+            "cpu": 371,
+            "memory": 131,
+            "storage": 81,
+            "bandwidth": 16
+        },
+        {
+            "id": 284,
+            "name": "s5",
+            "cpu": 369,
+            "memory": 312,
+            "storage": 118,
+            "bandwidth": 16
+        },
+        {
+            "id": 425,
+            "name": "s6",
+            "cpu": 479,
+            "memory": 312,
+            "storage": 156,
+            "bandwidth": 15
+        },
+        {
+            "id": 453,
+            "name": "s7",
+            "cpu": 268,
+            "memory": 92,
+            "storage": 119,
+            "bandwidth": 16
+        }
+    ],
+    "applications": [
+        {
+            "name": "App6",
+            "services": [
+                174,
+                895,
+                115,
+                723,
+                858,
+                284,
+                425,
+                453
+            ],
+            "choreography": [
+                {
+                    "source": 174,
+                    "target": 895,
+                    "payload": 112,
+                    "transmission_time": 8
+                },
+                {
+                    "source": 895,
+                    "target": 115,
+                    "payload": 192,
+                    "transmission_time": 5
+                },
+                {
+                    "source": 115,
+                    "target": 723,
+                    "payload": 64,
+                    "transmission_time": 6
+                },
+                {
+                    "source": 723,
+                    "target": 858,
+                    "payload": 192,
+                    "transmission_time": 8
+                },
+                {
+                    "source": 858,
+                    "target": 284,
+                    "payload": 257,
+                    "transmission_time": 5
+                },
+                {
+                    "source": 284,
+                    "target": 425,
+                    "payload": 145,
+                    "transmission_time": 5
+                },
+                {
+                    "source": 425,
+                    "target": 453,
+                    "payload": 176,
+                    "transmission_time": 9
+                }
+            ]
+        }
+    ]
+}
