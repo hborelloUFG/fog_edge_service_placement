@@ -1,0 +1,248 @@
+{
+    "services": [
+        {
+            "id": 0,
+            "name": "s650",
+            "cpu": 200,
+            "memory": 250,
+            "storage": 135,
+            "bandwidth": 50
+        },
+        {
+            "id": 1,
+            "name": "s170",
+            "cpu": 125,
+            "memory": 210,
+            "storage": 150,
+            "bandwidth": 75
+        },
+        {
+            "id": 2,
+            "name": "s1288",
+            "cpu": 200,
+            "memory": 210,
+            "storage": 150,
+            "bandwidth": 75
+        },
+        {
+            "id": 3,
+            "name": "s424",
+            "cpu": 200,
+            "memory": 250,
+            "storage": 135,
+            "bandwidth": 50
+        },
+        {
+            "id": 4,
+            "name": "s395",
+            "cpu": 150,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        },
+        {
+            "id": 5,
+            "name": "s668",
+            "cpu": 200,
+            "memory": 210,
+            "storage": 150,
+            "bandwidth": 75
+        },
+        
+        {
+            "id": 6,
+            "name": "s491",
+            "cpu": 37,
+            "memory": 75,
+            "storage": 60,
+            "bandwidth": 25
+        },
+        {
+            "id": 7,
+            "name": "s141",
+            "cpu": 150,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        },
+        {
+            "id": 8,
+            "name": "s408",
+            "cpu": 200,
+            "memory": 210,
+            "storage": 150,
+            "bandwidth": 75
+        },
+        {
+            "id": 9,
+            "name": "s581",
+            "cpu": 75,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        },
+        {
+            "id": 10,
+            "name": "s742",
+            "cpu": 100,
+            "memory": 250,
+            "storage": 135,
+            "bandwidth": 50
+        },
+        {
+            "id": 11,
+            "name": "s106",
+            "cpu": 200,
+            "memory": 250,
+            "storage": 135,
+            "bandwidth": 50
+        },
+        {
+            "id": 12,
+            "name": "s842",
+            "cpu": 50,
+            "memory": 100,
+            "storage": 85,
+            "bandwidth": 40
+        },
+        {
+            "id": 13,
+            "name": "s1288",
+            "cpu": 200,
+            "memory": 210,
+            "storage": 150,
+            "bandwidth": 75
+        },
+        {
+            "id": 14,
+            "name": "s763",
+            "cpu": 300,
+            "memory": 210,
+            "storage": 150,
+            "bandwidth": 75
+        },
+        {
+            "id": 15,
+            "name": "s913",
+            "cpu": 150,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        }
+    ],
+    "applications": [
+        {
+            "name": "App3",
+            "services": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15
+            ],
+            "choreography": [
+                {
+                    "source": 0,
+                    "target": 1,
+                    "payload": 336,
+                    "transmission_time": 51
+                },
+                {
+                    "source": 1,
+                    "target": 2,
+                    "payload": 31,
+                    "transmission_time": 57
+                },
+                {
+                    "source": 2,
+                    "target": 3,
+                    "payload": 158,
+                    "transmission_time": 60
+                },
+                {
+                    "source": 3,
+                    "target": 4,
+                    "payload": 155,
+                    "transmission_time": 73
+                },
+                {
+                    "source": 4,
+                    "target": 5,
+                    "payload": 152,
+                    "transmission_time": 46
+                },
+                {
+                    "source": 5,
+                    "target": 6,
+                    "payload": 230,
+                    "transmission_time": 62
+                },
+                {
+                    "source": 6,
+                    "target": 7,
+                    "payload": 319,
+                    "transmission_time": 62
+                },
+                {
+                    "source": 7,
+                    "target": 8,
+                    "payload": 479,
+                    "transmission_time": 62
+                },
+                {
+                    "source": 8,
+                    "target": 9,
+                    "payload": 120,
+                    "transmission_time": 61
+                },
+                {
+                    "source": 9,
+                    "target": 10,
+                    "payload": 368,
+                    "transmission_time": 65
+                },
+                {
+                    "source": 10,
+                    "target": 11,
+                    "payload": 390,
+                    "transmission_time": 51
+                },
+                {
+                    "source": 11,
+                    "target": 12,
+                    "payload": 278,
+                    "transmission_time": 40
+                },
+                {
+                    "source": 12,
+                    "target": 13,
+                    "payload": 490,
+                    "transmission_time": 58
+                },
+                {
+                    "source": 13,
+                    "target": 14,
+                    "payload": 460,
+                    "transmission_time": 53
+                },
+                {
+                    "source": 14,
+                    "target": 15,
+                    "payload": 249,
+                    "transmission_time": 51
+                }
+            ]
+        }
+    ]
+}

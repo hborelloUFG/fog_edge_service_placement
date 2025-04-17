@@ -1,0 +1,214 @@
+Allocation to  App0
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  16.0
+Allocations :  [(0, 3), (1, 3), (2, 31), (3, 11), (4, 11), (5, 11), (6, 8), (7, 13), (8, 25), (9, 16), (10, 9), (11, 9), (12, 9), (13, 23), (14, 42), (15, 42), (16, 24), (17, 45), (18, 47), (19, 1), (20, 1), (21, 49), (22, 13), (23, 13), (24, 13)]
+Time :  86.02094579 s
+Time Solver =  60.05795407295227 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App1
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  14.0
+Allocations :  [(0, 9), (1, 9), (2, 9), (3, 9), (4, 9), (5, 23), (6, 24), (7, 45), (8, 45), (9, 49), (10, 37), (11, 37), (12, 2), (13, 8), (14, 8), (15, 13), (16, 13), (17, 11), (18, 11), (19, 3), (20, 3), (21, 43), (22, 43), (23, 43), (24, 27), (25, 21), (26, 21), (27, 22)]
+Time :  87.79031348 s
+Time Solver =  60.08057379722595 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App2
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  19.0
+Allocations :  [(0, 47), (1, 47), (2, 45), (3, 45), (4, 24), (5, 23), (6, 9), (7, 9), (8, 33), (9, 9), (10, 19), (11, 44), (12, 5), (13, 5), (14, 21), (15, 27), (16, 43), (17, 3), (18, 11), (19, 13), (20, 13), (21, 8), (22, 8), (23, 2)]
+Time :  84.89219570 s
+Time Solver =  60.04379987716675 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App3
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  19.0
+Allocations :  [(0, 22), (1, 4), (2, 5), (3, 21), (4, 27), (5, 43), (6, 20), (7, 3), (8, 11), (9, 13), (10, 13), (11, 13), (12, 13), (13, 8), (14, 8), (15, 37), (16, 37), (17, 49), (18, 49), (19, 1), (20, 47), (21, 45), (22, 24), (23, 23), (24, 42), (25, 42)]
+Time :  86.54429460 s
+Time Solver =  60.05913305282593 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App4
+Objective (min hops) :  2.0
+Allocations :  [(0, 13), (1, 13), (2, 13), (3, 11), (4, 11), (5, 11), (6, 8)]
+Time :  6.83525133 s
+Time Solver =  0.6462059020996094 s
+Status :  Optimal
+
+-----------------------------------
+
+Allocation to  App5
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  17.0
+Allocations :  [(0, 26), (1, 26), (2, 1), (3, 1), (4, 49), (5, 37), (6, 2), (7, 8), (8, 8), (9, 11), (10, 11), (11, 13), (12, 13), (13, 13), (14, 25), (15, 19), (16, 16), (17, 9), (18, 9), (19, 9), (20, 23), (21, 28), (22, 46), (23, 42), (24, 42), (25, 23)]
+Time :  86.32357407 s
+Time Solver =  60.08085012435913 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App6
+Objective (min hops) :  5.0
+Allocations :  [(0, 43), (1, 20), (2, 3), (3, 11), (4, 8), (5, 8), (6, 13), (7, 13)]
+Time :  11.01354408 s
+Time Solver =  2.8701632022857666 s
+Status :  Optimal
+
+-----------------------------------
+
+Allocation to  App7
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  12.0
+Allocations :  [(0, 37), (1, 37), (2, 2), (3, 8), (4, 11), (5, 11), (6, 13), (7, 13), (8, 13), (9, 49), (10, 1), (11, 47), (12, 45), (13, 24), (14, 33), (15, 9), (16, 9), (17, 23)]
+Time :  77.08370233 s
+Time Solver =  60.02527189254761 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App8
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  15.0
+Allocations :  [(0, 1), (1, 47), (2, 45), (3, 24), (4, 23), (5, 42), (6, 42), (7, 42), (8, 23), (9, 9), (10, 9), (11, 16), (12, 19), (13, 13), (14, 13), (15, 11), (16, 11), (17, 8), (18, 13), (19, 31), (20, 31)]
+Time :  81.97871137 s
+Time Solver =  60.037418842315674 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App9
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  16.0
+Allocations :  [(0, 32), (1, 31), (2, 11), (3, 11), (4, 13), (5, 13), (6, 1), (7, 47), (8, 45), (9, 24), (10, 9), (11, 9), (12, 9), (13, 23), (14, 23), (15, 23), (16, 42), (17, 42), (18, 46), (19, 28), (20, 16), (21, 19), (22, 19)]
+Time :  82.64122534 s
+Time Solver =  60.04452204704285 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App10
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  17.0
+Allocations :  [(0, 20), (1, 3), (2, 11), (3, 8), (4, 8), (5, 11), (6, 13), (7, 13), (8, 49), (9, 1), (10, 1), (11, 47), (12, 45), (13, 30), (14, 24), (15, 23), (16, 9), (17, 9), (18, 33), (19, 24), (20, 17), (21, 17), (22, 17)]
+Time :  83.58619452 s
+Time Solver =  60.181037187576294 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App11
+Objective (min hops) :  2.0
+Allocations :  [(0, 11), (1, 13), (2, 13), (3, 13), (4, 8), (5, 8)]
+Time :  6.16979837 s
+Time Solver =  0.7258169651031494 s
+Status :  Optimal
+
+-----------------------------------
+
+Allocation to  App12
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  9.0
+Allocations :  [(0, 27), (1, 27), (2, 21), (3, 21), (4, 22), (5, 22), (6, 5), (7, 5), (8, 43), (9, 3), (10, 11), (11, 11), (12, 13), (13, 13), (14, 8)]
+Time :  75.20475674 s
+Time Solver =  60.02247500419617 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App13
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  16.0
+Allocations :  [(0, 19), (1, 16), (2, 9), (3, 9), (4, 23), (5, 23), (6, 24), (7, 45), (8, 45), (9, 45), (10, 47), (11, 1), (12, 49), (13, 13), (14, 13), (15, 11), (16, 3), (17, 20), (18, 43), (19, 32), (20, 5), (21, 22)]
+Time :  84.20120525 s
+Time Solver =  60.165446043014526 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App14
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  27.0
+Allocations :  [(0, 9), (1, 16), (2, 9), (3, 9), (4, 9), (5, 9), (6, 24), (7, 42), (8, 23), (9, 45), (10, 47), (11, 1), (12, 37), (13, 37), (14, 49), (15, 13), (16, 13), (17, 35), (18, 13), (19, 8), (20, 8), (21, 11), (22, 11), (23, 3), (24, 43), (25, 43), (26, 5), (27, 22), (28, 22)]
+Time :  89.15857315 s
+Time Solver =  60.054275035858154 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App15
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  11.0
+Allocations :  [(0, 21), (1, 5), (2, 22), (3, 7), (4, 7), (5, 15), (6, 27), (7, 43), (8, 20), (9, 20), (10, 3), (11, 11), (12, 11), (13, 8), (14, 8)]
+Time :  76.77787328 s
+Time Solver =  60.01958918571472 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App16
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  10.0
+Allocations :  [(0, 13), (1, 13), (2, 13), (3, 11), (4, 8), (5, 2), (6, 37), (7, 49), (8, 45), (9, 24), (10, 24), (11, 42), (12, 23), (13, 9), (14, 9), (15, 9)]
+Time :  75.88602638 s
+Time Solver =  60.043354988098145 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App17
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  16.0
+Allocations :  [(0, 20), (1, 3), (2, 11), (3, 11), (4, 13), (5, 8), (6, 8), (7, 8), (8, 13), (9, 19), (10, 44), (11, 28), (12, 23), (13, 9), (14, 9), (15, 9), (16, 23), (17, 42), (18, 42), (19, 24), (20, 45), (21, 47), (22, 47)]
+Time :  82.74858046 s
+Time Solver =  60.025476932525635 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App18
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  10.0
+Allocations :  [(0, 11), (1, 11), (2, 13), (3, 13), (4, 49), (5, 45), (6, 24), (7, 17), (8, 24), (9, 24), (10, 42), (11, 42), (12, 23), (13, 9), (14, 9), (15, 9), (16, 16)]
+Time :  77.99111891 s
+Time Solver =  60.03533411026001 s
+Status :  Infeasible
+
+-----------------------------------
+
+Allocation to  App19
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Objective (min hops) :  9.0
+Allocations :  [(0, 11), (1, 3), (2, 20), (3, 43), (4, 27), (5, 21), (6, 5), (7, 5), (8, 25), (9, 13), (10, 13), (11, 8)]
+Time :  72.35900640 s
+Time Solver =  60.032955169677734 s
+Status :  Infeasible
+
+-----------------------------------
+

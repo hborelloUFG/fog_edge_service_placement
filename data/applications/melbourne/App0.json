@@ -1,0 +1,67 @@
+{
+    "services": [
+        {
+            "id": 0,
+            "name": "s1338",
+            "cpu": 125,
+            "memory": 128,
+            "storage": 37,
+            "bandwidth": 18
+        },
+        {
+            "id": 1,
+            "name": "s44",
+            "cpu": 125,
+            "memory": 62,
+            "storage": 33,
+            "bandwidth": 12
+        },
+        {
+            "id": 2,
+            "name": "s491",
+            "cpu": 9,
+            "memory": 18,
+            "storage": 15,
+            "bandwidth": 6
+        },
+        {
+            "id": 3,
+            "name": "s855",
+            "cpu": 6,
+            "memory": 12,
+            "storage": 10,
+            "bandwidth": 2
+        }
+    ],
+    "applications": [
+        {
+            "name": "App1",
+            "services": [
+                0,
+                1,
+                2,
+                3
+            ],
+            "choreography": [
+                {
+                    "source": 0,
+                    "target": 1,
+                    "payload": 268,
+                    "transmission_time": 42
+                },
+                {
+                    "source": 1,
+                    "target": 2,
+                    "payload": 197,
+                    "transmission_time": 73
+                },
+                {
+                    "source": 2,
+                    "target": 3,
+                    "payload": 313,
+                    "transmission_time": 44
+                }
+            ]
+        }
+    ]
+}

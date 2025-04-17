@@ -1,0 +1,176 @@
+Allocation to  App0
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App1
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App2
+WARNING: Loading a SolverResults object with a warning status into
+model.name="unknown";
+    - termination condition: infeasible
+    - message from solver: <undefined>
+Model is infeasible. No solution found.
+
+-----------------------------------
+
+Allocation to  App3
+Objective (min hops): 38.0
+Allocations: [(0, 26), (1, 45), (2, 31), (3, 4), (4, 28), (5, 42), (6, 23), (7, 23), (8, 9), (9, 9), (10, 21), (11, 5), (12, 13), (13, 13), (14, 45), (15, 37), (16, 8), (17, 8), (18, 11), (19, 11), (20, 43), (21, 22), (22, 5), (23, 35), (24, 35), (25, 22)]
+Time (wallclock): 59.24410510 s
+Time Solver: 34.017914056777954 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App4
+Objective (min hops): 3.0
+Allocations: [(0, 13), (1, 13), (2, 8), (3, 8), (4, 11), (5, 11), (6, 13)]
+Time (wallclock): 8.28320050 s
+Time Solver: 0.5122849941253662 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App5
+Objective (min hops): 38.0
+Allocations: [(0, 42), (1, 9), (2, 9), (3, 24), (4, 24), (5, 11), (6, 8), (7, 8), (8, 31), (9, 11), (10, 27), (11, 43), (12, 21), (13, 27), (14, 43), (15, 5), (16, 36), (17, 14), (18, 10), (19, 35), (20, 35), (21, 28), (22, 22), (23, 5), (24, 13), (25, 13)]
+Time (wallclock): 51.27505898 s
+Time Solver: 24.58464789390564 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App6
+Objective (min hops): 13.0
+Allocations: [(0, 9), (1, 9), (2, 8), (3, 13), (4, 8), (5, 37), (6, 13), (7, 10)]
+Time (wallclock): 8.32621241 s
+Time Solver: 0.3936169147491455 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App7
+Objective (min hops): 35.0
+Allocations: [(0, 19), (1, 1), (2, 18), (3, 21), (4, 5), (5, 22), (6, 11), (7, 11), (8, 13), (9, 19), (10, 9), (11, 17), (12, 9), (13, 13), (14, 5), (15, 35), (16, 35), (17, 14)]
+Time (wallclock): 20.15027618 s
+Time Solver: 2.2858850955963135 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App8
+Objective (min hops): 43.0
+Allocations: [(0, 10), (1, 13), (2, 22), (3, 17), (4, 9), (5, 9), (6, 19), (7, 8), (8, 37), (9, 11), (10, 43), (11, 2), (12, 11), (13, 8), (14, 13), (15, 19), (16, 44), (17, 9), (18, 42), (19, 28), (20, 28)]
+Time (wallclock): 33.20123744 s
+Time Solver: 11.3180570602417 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App9
+Objective (min hops): 44.0
+Allocations: [(0, 9), (1, 28), (2, 35), (3, 39), (4, 22), (5, 8), (6, 11), (7, 37), (8, 13), (9, 21), (10, 19), (11, 9), (12, 19), (13, 13), (14, 35), (15, 8), (16, 11), (17, 43), (18, 27), (19, 27), (20, 5), (21, 5), (22, 39)]
+Time (wallclock): 43.80749941 s
+Time Solver: 19.826910972595215 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App10
+Objective (min hops): 50.0
+Allocations: [(0, 17), (1, 9), (2, 26), (3, 13), (4, 13), (5, 11), (6, 43), (7, 5), (8, 22), (9, 35), (10, 19), (11, 19), (12, 21), (13, 35), (14, 29), (15, 29), (16, 9), (17, 42), (18, 8), (19, 8), (20, 5), (21, 21), (22, 11)]
+Time (wallclock): 26.93387723 s
+Time Solver: 3.6317968368530273 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App11
+Objective (min hops): 4.0
+Allocations: [(0, 43), (1, 11), (2, 11), (3, 13), (4, 13), (5, 31)]
+Time (wallclock): 6.18999887 s
+Time Solver: 0.33652400970458984 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App12
+WARNING: Loading a SolverResults object with a warning status into
+model.name="unknown";
+    - termination condition: infeasible
+    - message from solver: <undefined>
+Model is infeasible. No solution found.
+
+-----------------------------------
+
+Allocation to  App13
+Objective (min hops): 35.0
+Allocations: [(0, 22), (1, 21), (2, 4), (3, 5), (4, 5), (5, 13), (6, 8), (7, 11), (8, 11), (9, 8), (10, 37), (11, 18), (12, 1), (13, 26), (14, 45), (15, 17), (16, 42), (17, 13), (18, 14), (19, 28), (20, 9), (21, 9)]
+Time (wallclock): 32.91521263 s
+Time Solver: 10.374883890151978 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App14
+WARNING: Loading a SolverResults object with a warning status into
+model.name="unknown";
+    - termination condition: infeasible
+    - message from solver: <undefined>
+Model is infeasible. No solution found.
+
+-----------------------------------
+
+Allocation to  App15
+WARNING: Loading a SolverResults object with a warning status into
+model.name="unknown";
+    - termination condition: infeasible
+    - message from solver: <undefined>
+Model is infeasible. No solution found.
+
+-----------------------------------
+
+Allocation to  App16
+Objective (min hops): 32.0
+Allocations: [(0, 13), (1, 22), (2, 5), (3, 9), (4, 17), (5, 13), (6, 37), (7, 49), (8, 28), (9, 9), (10, 19), (11, 35), (12, 35), (13, 4), (14, 5), (15, 19)]
+Time (wallclock): 17.93942046 s
+Time Solver: 1.9390990734100342 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App17
+Objective (min hops): 32.0
+Allocations: [(0, 11), (1, 11), (2, 13), (3, 13), (4, 21), (5, 22), (6, 22), (7, 29), (8, 28), (9, 24), (10, 47), (11, 24), (12, 9), (13, 9), (14, 19), (15, 19), (16, 44), (17, 29), (18, 42), (19, 17), (20, 45), (21, 47), (22, 45)]
+Time (wallclock): 80.93353271 s
+Time Solver: 56.73321199417114 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App18
+Objective (min hops): 22.0
+Allocations: [(0, 17), (1, 17), (2, 23), (3, 9), (4, 9), (5, 13), (6, 8), (7, 13), (8, 8), (9, 8), (10, 5), (11, 5), (12, 11), (13, 11), (14, 43), (15, 43), (16, 18)]
+Time (wallclock): 23.01964402 s
+Time Solver: 5.9505980014801025 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App19
+Objective (min hops): 20.0
+Allocations: [(0, 1), (1, 13), (2, 17), (3, 42), (4, 28), (5, 22), (6, 21), (7, 43), (8, 11), (9, 11), (10, 13), (11, 37)]
+Time (wallclock): 14.94108295 s
+Time Solver: 2.3408799171447754 s
+Status: Optimal
+
+-----------------------------------
+

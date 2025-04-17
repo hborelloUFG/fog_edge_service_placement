@@ -1,0 +1,307 @@
+{
+    "services": [
+        {
+            "id": 0,
+            "name": "s111",
+            "cpu": 500,
+            "memory": 256,
+            "storage": 150,
+            "bandwidth": 75
+        },
+        {
+            "id": 1,
+            "name": "s336",
+            "cpu": 256,
+            "memory": 312,
+            "storage": 150,
+            "bandwidth": 75
+        },
+        {
+            "id": 2,
+            "name": "s154",
+            "cpu": 450,
+            "memory": 250,
+            "storage": 135,
+            "bandwidth": 50
+        },
+        {
+            "id": 3,
+            "name": "s1187",
+            "cpu": 75,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        },
+        {
+            "id": 4,
+            "name": "s953",
+            "cpu": 450,
+            "memory": 250,
+            "storage": 135,
+            "bandwidth": 50
+        },
+        {
+            "id": 5,
+            "name": "s1060",
+            "cpu": 450,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        },
+        {
+            "id": 6,
+            "name": "s869",
+            "cpu": 256,
+            "memory": 250,
+            "storage": 135,
+            "bandwidth": 50
+        },
+        {
+            "id": 7,
+            "name": "s1246",
+            "cpu": 450,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        },
+        {
+            "id": 8,
+            "name": "s885",
+            "cpu": 250,
+            "memory": 100,
+            "storage": 85,
+            "bandwidth": 40
+        },
+        {
+            "id": 9,
+            "name": "s913",
+            "cpu": 350,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        },
+        {
+            "id": 10,
+            "name": "s699",
+            "cpu": 37,
+            "memory": 75,
+            "storage": 60,
+            "bandwidth": 25
+        },
+        {
+            "id": 11,
+            "name": "s937",
+            "cpu": 25,
+            "memory": 50,
+            "storage": 40,
+            "bandwidth": 10
+        },
+        {
+            "id": 12,
+            "name": "s838",
+            "cpu": 350,
+            "memory": 100,
+            "storage": 85,
+            "bandwidth": 40
+        },
+        {
+            "id": 13,
+            "name": "s699",
+            "cpu": 37,
+            "memory": 75,
+            "storage": 60,
+            "bandwidth": 25
+        },
+        {
+            "id": 14,
+            "name": "s27",
+            "cpu": 350,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        },
+        {
+            "id": 15,
+            "name": "s855",
+            "cpu": 25,
+            "memory": 50,
+            "storage": 40,
+            "bandwidth": 10
+        },
+        {
+            "id": 16,
+            "name": "s650",
+            "cpu": 256,
+            "memory": 250,
+            "storage": 135,
+            "bandwidth": 50
+        },
+        {
+            "id": 17,
+            "name": "s833",
+            "cpu": 50,
+            "memory": 100,
+            "storage": 85,
+            "bandwidth": 40
+        },
+        {
+            "id": 18,
+            "name": "s473",
+            "cpu": 25,
+            "memory": 50,
+            "storage": 40,
+            "bandwidth": 10
+        },
+        {
+            "id": 19,
+            "name": "s172",
+            "cpu": 75,
+            "memory": 150,
+            "storage": 110,
+            "bandwidth": 45
+        }
+    ],
+    "applications": [
+        {
+            "name": "App4",
+            "services": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19
+            ],
+            "choreography": [
+                {
+                    "source": 0,
+                    "target": 1,
+                    "payload": 77,
+                    "transmission_time": 60
+                },
+                {
+                    "source": 1,
+                    "target": 2,
+                    "payload": 236,
+                    "transmission_time": 52
+                },
+                {
+                    "source": 2,
+                    "target": 3,
+                    "payload": 234,
+                    "transmission_time": 72
+                },
+                {
+                    "source": 3,
+                    "target": 4,
+                    "payload": 336,
+                    "transmission_time": 75
+                },
+                {
+                    "source": 4,
+                    "target": 5,
+                    "payload": 417,
+                    "transmission_time": 71
+                },
+                {
+                    "source": 5,
+                    "target": 6,
+                    "payload": 460,
+                    "transmission_time": 73
+                },
+                {
+                    "source": 6,
+                    "target": 7,
+                    "payload": 311,
+                    "transmission_time": 45
+                },
+                {
+                    "source": 7,
+                    "target": 8,
+                    "payload": 137,
+                    "transmission_time": 55
+                },
+                {
+                    "source": 8,
+                    "target": 9,
+                    "payload": 333,
+                    "transmission_time": 75
+                },
+                {
+                    "source": 9,
+                    "target": 10,
+                    "payload": 188,
+                    "transmission_time": 59
+                },
+                {
+                    "source": 10,
+                    "target": 11,
+                    "payload": 322,
+                    "transmission_time": 78
+                },
+                {
+                    "source": 11,
+                    "target": 12,
+                    "payload": 49,
+                    "transmission_time": 70
+                },
+                {
+                    "source": 12,
+                    "target": 13,
+                    "payload": 121,
+                    "transmission_time": 62
+                },
+                {
+                    "source": 13,
+                    "target": 14,
+                    "payload": 402,
+                    "transmission_time": 71
+                },
+                {
+                    "source": 14,
+                    "target": 15,
+                    "payload": 374,
+                    "transmission_time": 46
+                },
+                {
+                    "source": 15,
+                    "target": 16,
+                    "payload": 465,
+                    "transmission_time": 63
+                },
+                {
+                    "source": 16,
+                    "target": 17,
+                    "payload": 477,
+                    "transmission_time": 48
+                },
+                {
+                    "source": 17,
+                    "target": 18,
+                    "payload": 292,
+                    "transmission_time": 70
+                },
+                {
+                    "source": 18,
+                    "target": 19,
+                    "payload": 85,
+                    "transmission_time": 45
+                }
+            ]
+        }
+    ]
+}

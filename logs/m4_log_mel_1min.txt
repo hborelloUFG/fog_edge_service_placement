@@ -1,0 +1,156 @@
+Allocation to  App0
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App1
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App2
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App3
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App4
+Objective (min hops): 6.0
+Allocations: [(0, 41), (1, 40), (2, 40), (3, 40), (4, 60), (5, 60), (6, 41)]
+Time (wallclock): 26.29007363 s
+Time Solver: 6.631466865539551 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App5
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App6
+Objective (min hops): 10.0
+Allocations: [(0, 9), (1, 13), (2, 13), (3, 40), (4, 53), (5, 53), (6, 40), (7, 9)]
+Time (wallclock): 28.53098822 s
+Time Solver: 5.230890989303589 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App7
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App8
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App9
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App10
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App11
+Objective (min hops): 4.0
+Allocations: [(0, 9), (1, 9), (2, 18), (3, 18), (4, 60), (5, 60)]
+Time (wallclock): 23.01477170 s
+Time Solver: 2.8032121658325195 s
+Status: Optimal
+
+-----------------------------------
+
+Allocation to  App12
+WARNING: Loading a SolverResults object with a warning status into
+model.name="unknown";
+    - termination condition: infeasible
+    - message from solver: <undefined>
+Model is infeasible. No solution found.
+
+-----------------------------------
+
+Allocation to  App13
+WARNING: Loading a SolverResults object with a warning status into
+model.name="unknown";
+    - termination condition: infeasible
+    - message from solver: <undefined>
+Model is infeasible. No solution found.
+
+-----------------------------------
+
+Allocation to  App14
+WARNING: Loading a SolverResults object with a warning status into
+model.name="unknown";
+    - termination condition: infeasible
+    - message from solver: <undefined>
+Model is infeasible. No solution found.
+
+-----------------------------------
+
+Allocation to  App15
+WARNING: Loading a SolverResults object with a warning status into
+model.name="unknown";
+    - termination condition: infeasible
+    - message from solver: <undefined>
+Model is infeasible. No solution found.
+
+-----------------------------------
+
+Allocation to  App16
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App17
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App18
+WARNING: Loading a SolverResults object with an 'aborted' status, but
+containing a solution
+Solver ended with an unexpected status: maxTimeLimit
+
+-----------------------------------
+
+Allocation to  App19
+WARNING: Loading a SolverResults object with a warning status into
+model.name="unknown";
+    - termination condition: infeasible
+    - message from solver: <undefined>
+Model is infeasible. No solution found.
+
+-----------------------------------
+
