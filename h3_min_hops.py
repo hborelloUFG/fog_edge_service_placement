@@ -15,7 +15,7 @@ np.set_printoptions(suppress=True)
 # ----------------------------------------------------------------------------------
 
 # Global variables
-global_topology = 'germany'
+global_topology = 'melbourne'
 global_path = 'orign/'
 global_columns = ['id', 'cpu', 'memory', 'storage', 'bandwidth']
 global_capacity_percent = 1.0  # 100% capacity
@@ -167,7 +167,7 @@ for app_index in range(20):
 # ----------------------------------------------------------------------------------
 
 # Write allocations to CSV file
-with open('results/h3_min_hops.csv', 'w', newline='') as csvfile:
+with open('results/h3_min_hops_'+global_topology+'.csv', 'w', newline='') as csvfile:
     csv_writer = csv.writer(csvfile)
     for app_name, allocation_data in allocations_dict.items():
         csv_writer.writerow([app_name, allocation_data])

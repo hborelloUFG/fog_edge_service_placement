@@ -9,7 +9,7 @@ import copy
 import datetime
 
 # ----------------------------------------------------------------------------------
-topology = 'germany'
+topology = 'melbourne'
 path = 'orign/'
 columns = ['id', 'cpu', 'memory', 'storage', 'bandwidth']
 
@@ -145,6 +145,6 @@ for i in range(20):
     # write dict_allocations to cvs file
 # dict to csv
 import csv
-w = csv.writer(open('results/h2_min_residual.csv', 'w'))
+w = csv.writer(open('results/h2_min_residual_'+topology+'.csv', 'w'))
 for key, val in dict_allocations.items():
     w.writerow([key, val])

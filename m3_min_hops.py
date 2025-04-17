@@ -6,9 +6,10 @@ import numpy as np
 import datetime
 
 # ----------------------------------------------------------------------------------
-topology = 'germany'
+topology = 'melbourne'
 path = 'orign/'
 columns = ['id', 'cpu', 'memory', 'storage', 'bandwidth']
+time_limit = 1
 
 # capacity percent: 0.8 = 80%
 cp = 1.0
@@ -36,7 +37,7 @@ def get_data_application(app, path):
 
     return services, df_choreog
 
-def get_placement(services, nodes, s_matrix, time_limit=30):
+def get_placement(services, nodes, s_matrix, time_limit=time_limit):
 
     qtd_nodes = len(nodes)
     qtd_services = len(services)
@@ -133,6 +134,6 @@ for i in range(20):
 
 # dict to csv
 import csv
-w = csv.writer(open('m3_min_hops_pyomo.csv', 'w'))
+w = csv.writer(open('m3_min_hops_pyomo'+topology+'.csv', 'w'))
 for key, val in dict_allocations.items():
     w.writerow([key, val])
