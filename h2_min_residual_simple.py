@@ -11,8 +11,8 @@ from typing import Tuple, List, Dict
 sys.path.append('modules')
 
 # Configurações globais
-TOPOLOGY = 'germany'
-PATH = 'orign/'
+TOPOLOGY = 'synthetic'
+PATH = 'melbourne2/'
 COLUMNS = ['id', 'cpu', 'memory', 'storage', 'bandwidth']
 CAPACITY_PERCENT = 1.0  # 100%
 
@@ -41,31 +41,23 @@ def get_data_application(app: str, path: str) -> Tuple[pd.DataFrame, pd.DataFram
     df_services['id'] = range(len(df_services))  # Redefinir IDs sequenciais
     return df_services, df_choreography
 
-def get_allocation(nodes_data: np.ndarray, services_data: np.ndarray):
+def get_allocation(nodes_data: np.ndarray, services_data: np.ndarray) -> Tuple[List[List[int]], List[str]]:
     """
-    Aloca serviços nos nós com base nos recursos residuais, executando 100 tentativas com embaralhamento.
-    Para cada execução, armazena o número de nós distintos alocados.
-    Retorna min_nodes, mean_nodes, std_nodes, mean_time, best_allocations.
+    Aloca serviços nos nós com base nos recursos residuais, executando T tentativas com embaralhamento.
+    Retorna a melhor alocação encontrada.
     """
-    T = 100  # Número de tentativas fixo
+    T = 10 * len(services_data)  # Número de tentativas
     best_allocations = []
     best_remaining_resources = float('inf')
     best_elapsed_time = None
-    nodes_allocated_list = []
-    times_list = []
 
     start_time = time.time()
 
     for _ in range(T):
         nodes_copy = copy.deepcopy(nodes_data)
-        np.random.shuffle(services_data)  # Embaralhar serviços antes da alocação
-        # Ordenar por CPU, depois memória, storage e bandwidth (colunas 1 a 4)
-        sort_idx = np.lexsort((-nodes_copy[:, 4], -nodes_copy[:, 3], -nodes_copy[:, 2], -nodes_copy[:, 1]))
-        nodes_copy = nodes_copy[sort_idx]
-
+        np.random.shuffle(nodes_copy)  # Embaralhar nós antes da alocação
         allocated_nodes = set()
         allocations = []
-        iter_start_time = time.time()
 
         for service_id, cpu, mem, sto, bw in services_data:
             # Filtrar nós capazes de alocar o serviço
@@ -86,32 +78,24 @@ def get_allocation(nodes_data: np.ndarray, services_data: np.ndarray):
 
         # Calcular recursos residuais
         total_remaining_resources = nodes_copy[:, 1:].sum()
-        nodes_allocated_list.append(len(set([alloc[1] for alloc in allocations])))
-        times_list.append(time.time() - iter_start_time)
+        
         # Atualizar melhor solução se necessário
         if total_remaining_resources < best_remaining_resources:
             best_remaining_resources = total_remaining_resources
             best_allocations = allocations
-            best_elapsed_time = time.time() - start_time
+            best_elapsed_time = '{:.8f}'.format(time.time() - start_time)
 
-    min_nodes = min(nodes_allocated_list)
-    mean_nodes = float(np.mean(nodes_allocated_list))
-    std_nodes = float(np.std(nodes_allocated_list))
-    mean_time = float(np.mean(times_list))
-    mean_time = float(f"{mean_time:.8f}")
-    return min_nodes, mean_nodes, std_nodes, mean_time, best_allocations
+    return best_allocations, [best_elapsed_time]
 
 
 def write_to_csv(filename: str, data):
     """
-    Escreve as alocações em um arquivo CSV com cabeçalhos: Application, MinNodes, MeanNodes, StdNodes, MeanTime, BestAllocations.
+    Escreve as alocações em um arquivo CSV no formato esperado.
     """
     with open(filename, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Application', 'MinNodes', 'MeanNodes', 'StdNodes', 'MeanTime', 'BestAllocations'])
         for key, val in data.items():
-            min_nodes, mean_nodes, std_nodes, mean_time, best_allocations = val
-            writer.writerow([key, min_nodes, mean_nodes, std_nodes, mean_time, str(best_allocations)])
+            writer.writerow([key, val])
 
 
 # --------------------------------------------
@@ -137,21 +121,17 @@ def main():
 
         # Alocar serviços nos nós
         nodes_copy = copy.deepcopy(nodes)
-        min_nodes, mean_nodes, std_nodes, mean_time, best_allocations = get_allocation(nodes_copy, services_data)
+        allocations, elapsed_time = get_allocation(nodes_copy, services_data)
 
         # Exibir resultados
-        print(f'Min nodes: {min_nodes}')
-        print(f'Mean nodes: {mean_nodes}')
-        print(f'Std nodes: {std_nodes}')
-        print(f'Mean time: {mean_time} s')
-        print(f'Best allocations: {best_allocations}')
-        print('-' * 40)
+        print(f'Allocations: {allocations}')
+        print(f'Time: {elapsed_time[0]} s\n{"-" * 40}')
 
         # Armazenar alocações
-        dict_allocations[app_name] = [min_nodes, mean_nodes, std_nodes, mean_time, best_allocations]
+        dict_allocations[app_name] = (allocations, elapsed_time)
 
-    # Salvar resultados em CSV no formato novo
-    output_file = f'results/mid/h2_min_residual_{TOPOLOGY}_new.csv'
+    # Salvar resultados em CSV no formato original
+    output_file = f'results/h2_min_residual_{TOPOLOGY}_new.csv'
     write_to_csv(output_file, dict_allocations)
     print(f'Results saved to {output_file}')
 

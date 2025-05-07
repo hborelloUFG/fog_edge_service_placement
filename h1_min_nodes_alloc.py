@@ -6,13 +6,11 @@ sys.path.append('modules')
 import pandas as pd
 import numpy as np
 import random as rd
-import datetime
 import time
 import csv
 
 import get_data as gd  # type: ignore
 
-# Configurações
 topology = 'germany'
 path = 'orign/'
 columns = ['id', 'cpu', 'memory', 'storage', 'bandwidth']
@@ -38,70 +36,69 @@ def get_data_application(app, path):
     except Exception as e:
         raise RuntimeError(f"Erro ao carregar dados da aplicação {app}: {e}")
 
-def get_allocation_greed(nodes_data, services_data, T=10, convergence_limit=5):
+# Heurística: executa exatamente 100 vezes, armazena número de nós alocados, calcula estatísticas e tempos
+def get_allocation_greed(nodes_data, services_data):
+    NUM_RUNS = 100
+    nodes_allocated_list = []
+    time_list = []
+    best_num_nodes = None
     best_allocations = []
     n_services = len(services_data)
-    time_allocations = []
 
-    start_time = time.time()
-    no_improvement_count = 0  # Contador de iterações sem melhoria
-
-
-    for _ in range(len(services_data)*T):
+    for run in range(NUM_RUNS):
+        start_time = time.time()
         services = [[int(i) for i in row] for row in services_data]
         nodes = [[int(i) for i in row] for row in nodes_data]
-        nodes = sorted(nodes, key=lambda x: (x[1], x[2], x[3], x[4]), reverse=True)  # Nós com mais recursos primeiro
+        
+        nodes = sorted(nodes, key=lambda x: (x[1], x[2], x[3], x[4]), reverse=True)
         rd.shuffle(services)
 
         allocations = []
         allocated = []
 
-        # **Passo 1**: Tentar alocar todos os serviços em um único nó.
+        # Passo 1: tentar alocar todos os serviços em um único nó.
         for n in nodes:
             if all(n[i] >= sum(s[i] for s in services) for i in range(1, 5)):
-                # Atualiza os recursos do nó.
                 for s in services:
                     n[1:5] = [n[i] - s[i] for i in range(1, 5)]
                     allocations.append([s[0], n[0]])
                 allocated.append(n[0])
                 break
 
-        # **Passo 2**: Caso não seja possível alocar em um único nó, fazer alocação serviço a serviço.
+        # Passo 2: se não possível, alocar serviço a serviço.
         if len(allocations) != len(services_data):
-            allocations = []  # Reinicia as alocações
+            allocations = []
             for n in nodes:
-                for s in services[:]:  # Itera sobre uma cópia para remover alocados
-                    if all(n[i] >= s[i] for i in range(1, 5)):  # Verifica recursos
-                        n[1:5] = [n[i] - s[i] for i in range(1, 5)]  # Atualiza os recursos do nó
+                for s in services[:]:
+                    if all(n[i] >= s[i] for i in range(1, 5)):
+                        n[1:5] = [n[i] - s[i] for i in range(1, 5)]
                         allocations.append([s[0], n[0]])
                         allocated.append(n[0])
-                        services.remove(s)  # Remove o serviço alocado
+                        services.remove(s)
                 if not services:
                     break
 
-        # **Passo 3**: Atualizar a melhor alocação se necessário.
-        if n_services >= len(set(allocated)):
+        num_nodes = len(set(allocated))
+        nodes_allocated_list.append(num_nodes)
+        time_list.append(time.time() - start_time)
+        # Armazena a melhor alocação (menor número de nós)
+        if (best_num_nodes is None) or (num_nodes < best_num_nodes):
+            best_num_nodes = num_nodes
             best_allocations = allocations
-            n_services = len(set(allocated))
-            no_improvement_count = 0
-        else:
-            no_improvement_count += 1
-        
-        # Interrompe se a solução não melhorar após várias iterações
-        if no_improvement_count >= (convergence_limit*n_services):
-            no_improvement_count = 0
-            break
 
-    time_allocations.append(f"{time.time() - start_time:.8f}")
-    print(f"T: {len(best_allocations)}")
-    return best_allocations, time_allocations
+    min_nodes = min(nodes_allocated_list)
+    mean_nodes = float(np.mean(nodes_allocated_list))
+    std_nodes = float(np.std(nodes_allocated_list))
+    mean_time = float(np.mean(time_list))
+    return min_nodes, mean_nodes, std_nodes, mean_time, best_allocations
 
 # Execução
 def main():
     nodes, edges, G = get_data_nodes()
     dict_allocations = dict()
-
     nodes_data = nodes.to_numpy().astype('int')
+
+    results_summary = []
 
     for i in range(20):
         application = f"App{i}"
@@ -111,17 +108,26 @@ def main():
         services_data = services.to_numpy().astype('int')
         services_data = sorted(services_data, key=lambda s: max(s[1:5]), reverse=True)
 
-        best_allocations, time_allocations = get_allocation_greed(nodes_data, services_data)
-        print(f"Allocations: {best_allocations}")
-        print(f"Time: {time_allocations} s")
-        n_nodes = len(set([x[1] for x in best_allocations]))
-        print(f"Number of allocated nodes: {n_nodes}\n{'-' * 35}\n")
-        dict_allocations[application] = (best_allocations, time_allocations)
+        min_nodes, mean_nodes, std_nodes, mean_time, best_allocations = get_allocation_greed(nodes_data, services_data)
+        print(f"Menor número de nós alocados: {min_nodes}")
+        print(f"Média de nós alocados: {mean_nodes:.2f}")
+        print(f"Desvio padrão da alocação de nós: {std_nodes:.2f}")
+        print(f"Média dos tempos de decisão: {mean_time:.8f} s")
+        print('-' * 40)
+        dict_allocations[application] = (min_nodes, mean_nodes, std_nodes, mean_time, best_allocations)
+        results_summary.append([application, min_nodes, mean_nodes, std_nodes, mean_time, best_allocations])
 
-    with open(f'results/h1_min_nodes_alloc_{topology}_new.csv', 'w', newline='') as f:
+    # Salva resultados detalhados (opcional)
+    with open(f'results/mid/h1_min_nodes_alloc_{topology}_new.csv', 'w', newline='') as f:
         writer = csv.writer(f)
-        for key, val in dict_allocations.items():
-            writer.writerow([key, val])
+        writer.writerow(['Application', 'MinNodes', 'MeanNodes', 'StdNodes', 'MeanTime', 'BestAllocations'])
+        for row in results_summary:
+            writer.writerow(row)
+
+    # Imprime resumo final para cada aplicação
+    print("\nResumo dos resultados por aplicação:")
+    for row in results_summary:
+        print(f"Aplicação: {row[0]} | Menor nº de nós: {row[1]} | Média de nós: {row[2]:.2f} | Desvio padrão: {row[3]:.2f} | Média tempo: {row[4]:.8f} s")
 
 if __name__ == "__main__":
     main()

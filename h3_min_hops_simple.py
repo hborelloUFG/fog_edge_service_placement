@@ -12,8 +12,8 @@ sys.path.append('modules')
 np.set_printoptions(suppress=True)
 
 # Variáveis globais
-TOPOLOGY = 'germany'
-DATA_PATH = 'orign/'
+TOPOLOGY = 'synthetic'
+DATA_PATH = 'melbourne2/'
 COLUMNS = ['id', 'cpu', 'memory', 'storage', 'bandwidth']
 CAPACITY_PERCENT = 1.0  # 100% da capacidade
 
@@ -95,24 +95,16 @@ def deduct_resources(node, service):
 def allocate_services(services_dict, nodes_dict, hops_matrix):
     """
     Aloca serviços aos nós enquanto minimiza o número de hops.
-    Realiza múltiplas execuções para obter estatísticas de uso de nós e tempo.
     """
-    n_exec = 100
-    nodes_used_list = []
-    decision_times = []
     best_allocations = []
     min_hops = float('inf')
-    best_nodes_used = None
+    start_time = time.time()
 
-    for _ in range(n_exec):
-        start_time = time.time()
-        current_best_allocations = []
-        current_min_hops = float('inf')
+    for starting_node in nodes_dict:
         allocations = []
-        temp_nodes = copy.deepcopy(nodes_dict)
-        # Escolha aleatória do nó inicial para diversificação
-        starting_node = rd.choice(list(nodes_dict.keys()))
+        temp_nodes = copy.deepcopy(nodes_dict)  # Cópia temporária dos nós
         current_node = starting_node
+
         for service_id, service in services_dict.items():
             if has_sufficient_resources(service, temp_nodes[current_node]):
                 allocations.append(current_node)
@@ -120,32 +112,27 @@ def allocate_services(services_dict, nodes_dict, hops_matrix):
             else:
                 next_nodes = find_next_nodes(current_node, hops_matrix)
                 next_node = next((n[0] for n in next_nodes if has_sufficient_resources(service, temp_nodes[n[0]])), None)
+
                 if next_node is None:
                     break  # Sem nó disponível para o serviço
                 current_node = next_node
                 allocations.append(current_node)
                 temp_nodes[current_node] = deduct_resources(temp_nodes[current_node], service)
-        # Estatísticas da execução
-        nodes_used_list.append(len(set(allocations)))
-        decision_times.append(time.time() - start_time)
+
         if len(allocations) == len(services_dict):
             total_hops = count_hops_for_allocations(allocations, hops_matrix)
             if total_hops < min_hops:
                 min_hops = total_hops
                 best_allocations = [(s_id, n_id) for s_id, n_id in zip(services_dict.keys(), allocations)]
-                best_nodes_used = len(set(allocations))
 
-    min_nodes = min(nodes_used_list)
-    mean_nodes = np.mean(nodes_used_list)
-    std_nodes = np.std(nodes_used_list)
-    mean_time = np.mean(decision_times)
-    return best_allocations, min_hops, min_nodes, mean_nodes, std_nodes, mean_time
+    allocation_time = '{:.8f}'.format(time.time() - start_time)
+    
+    return best_allocations, min_hops, [allocation_time]
 
 
 # ----------------------------------------------------------------------------------
 
 def main():
-    n_exec = 100
     # Carrega dados da topologia
     nodes, edges, hops_matrix = get_data_nodes(TOPOLOGY, CAPACITY_PERCENT, COLUMNS)
     allocations_dict = {}
@@ -155,22 +142,26 @@ def main():
         app_name = f'App{app_index}'
         print(f'Processing {app_name}...')
         services, choreography = get_data_application(app_name, DATA_PATH, COLUMNS)
+
         nodes_dict, services_dict = prepare_data_for_allocation(nodes, services)
-        best_allocations, min_hops, min_nodes, mean_nodes, std_nodes, mean_time = allocate_services(services_dict, nodes_dict, hops_matrix)
+
+        best_allocations, min_hops, allocation_time = allocate_services(services_dict, nodes_dict, hops_matrix)
+
         print(f'Allocations: {best_allocations}')
         print(f'Minimum Hops: {min_hops}')
-        print(f'MinNodes: {min_nodes}, MeanNodes: {mean_nodes:.2f}, StdNodes: {std_nodes:.2f}, MeanTime: {mean_time:.6f}s\n{"-" * 40}')
-        allocations_dict[app_name] = [min_nodes, mean_nodes, std_nodes, mean_time, best_allocations]
+        # print(f'Allocation Time: {allocation_time:.8f} seconds\n')
+        print(f'Allocation Time: {allocation_time[0]} s\n{"-" * 40}')
+
+
+        allocations_dict[app_name] = (best_allocations, allocation_time)
 
     # Exporta resultados para CSV
     os.makedirs('results', exist_ok=True)
-    output_file = f'results/mid/h3_min_hops_{TOPOLOGY}_new.csv'
+    output_file = f'results/h3_min_hops_{TOPOLOGY}_new.csv'
     with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['Application', 'MinNodes', 'MeanNodes', 'StdNodes', 'MeanTime', 'BestAllocations'])
         for key, val in allocations_dict.items():
-            min_nodes, mean_nodes, std_nodes, mean_time, best_allocations = val
-            writer.writerow([key, min_nodes, mean_nodes, std_nodes, mean_time, str(best_allocations)])
+            writer.writerow([key, val])
 
     print(f"Results saved to {output_file}")
 
