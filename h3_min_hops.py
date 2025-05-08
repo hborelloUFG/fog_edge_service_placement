@@ -98,7 +98,7 @@ def allocate_services(services_dict, nodes_dict, hops_matrix):
     Realiza múltiplas execuções para obter estatísticas de uso de nós e tempo.
     """
     n_exec = 100
-    nodes_used_list = []
+    min_hops_list = []
     decision_times = []
     best_allocations = []
     min_hops = float('inf')
@@ -126,20 +126,21 @@ def allocate_services(services_dict, nodes_dict, hops_matrix):
                 allocations.append(current_node)
                 temp_nodes[current_node] = deduct_resources(temp_nodes[current_node], service)
         # Estatísticas da execução
-        nodes_used_list.append(len(set(allocations)))
+        
         decision_times.append(time.time() - start_time)
         if len(allocations) == len(services_dict):
             total_hops = count_hops_for_allocations(allocations, hops_matrix)
+            min_hops_list.append(total_hops)
             if total_hops < min_hops:
                 min_hops = total_hops
                 best_allocations = [(s_id, n_id) for s_id, n_id in zip(services_dict.keys(), allocations)]
                 best_nodes_used = len(set(allocations))
 
-    min_nodes = min(nodes_used_list)
-    mean_nodes = np.mean(nodes_used_list)
-    std_nodes = np.std(nodes_used_list)
+    min_hops = min(min_hops_list)
+    mean_min_hops = np.mean(min_hops_list)
+    std_min_hops = np.std(min_hops_list)
     mean_time = np.mean(decision_times)
-    return best_allocations, min_hops, min_nodes, mean_nodes, std_nodes, mean_time
+    return best_allocations, min_hops, mean_min_hops, std_min_hops, mean_time
 
 
 # ----------------------------------------------------------------------------------
@@ -156,21 +157,21 @@ def main():
         print(f'Processing {app_name}...')
         services, choreography = get_data_application(app_name, DATA_PATH, COLUMNS)
         nodes_dict, services_dict = prepare_data_for_allocation(nodes, services)
-        best_allocations, min_hops, min_nodes, mean_nodes, std_nodes, mean_time = allocate_services(services_dict, nodes_dict, hops_matrix)
+        best_allocations, min_hops, mean_min_hops, std_min_hops, mean_time = allocate_services(services_dict, nodes_dict, hops_matrix)
         print(f'Allocations: {best_allocations}')
         print(f'Minimum Hops: {min_hops}')
-        print(f'MinNodes: {min_nodes}, MeanNodes: {mean_nodes:.2f}, StdNodes: {std_nodes:.2f}, MeanTime: {mean_time:.6f}s\n{"-" * 40}')
-        allocations_dict[app_name] = [min_nodes, mean_nodes, std_nodes, mean_time, best_allocations]
+        print(f'Mean Minimum Hops: {mean_min_hops:.2f}, Std Minimum Hops: {std_min_hops:.2f}, MeanTime: {mean_time:.6f}s\n{"-" * 40}')
+        allocations_dict[app_name] = [min_hops, mean_min_hops, std_min_hops, mean_time, best_allocations]
 
     # Exporta resultados para CSV
     os.makedirs('results', exist_ok=True)
     output_file = f'results/mid/h3_min_hops_{TOPOLOGY}_new.csv'
     with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(['Application', 'MinNodes', 'MeanNodes', 'StdNodes', 'MeanTime', 'BestAllocations'])
+        writer.writerow(['Application', 'MinHops', 'MeanMinHops', 'StdMinHops', 'MeanTime', 'BestAllocations'])
         for key, val in allocations_dict.items():
-            min_nodes, mean_nodes, std_nodes, mean_time, best_allocations = val
-            writer.writerow([key, min_nodes, mean_nodes, std_nodes, mean_time, str(best_allocations)])
+            min_hops, mean_min_hops, std_min_hops, mean_time, best_allocations = val
+            writer.writerow([key, min_hops, mean_min_hops, std_min_hops, mean_time, str(best_allocations)])
 
     print(f"Results saved to {output_file}")
 

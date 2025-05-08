@@ -11,10 +11,11 @@ from typing import Tuple, List, Dict
 sys.path.append('modules')
 
 # Configurações globais
-TOPOLOGY = 'synthetic'
-PATH = 'melbourne2/'
+TOPOLOGY = 'germany'
+PATH = 'orign/'
 COLUMNS = ['id', 'cpu', 'memory', 'storage', 'bandwidth']
 CAPACITY_PERCENT = 1.0  # 100%
+NODE_PENALTY_WEIGHT = 5  # Peso ajustável para penalizar uso de múltiplos nós
 
 # Importar módulo personalizado
 import get_data as gd  # type: ignore
@@ -55,7 +56,13 @@ def get_allocation(nodes_data: np.ndarray, services_data: np.ndarray) -> Tuple[L
 
     for _ in range(T):
         nodes_copy = copy.deepcopy(nodes_data)
-        np.random.shuffle(nodes_copy)  # Embaralhar nós antes da alocação
+        # np.random.shuffle(nodes_copy)  # Embaralhar nós antes da alocação
+        sort_idx = np.lexsort((-nodes_copy[:, 4], -nodes_copy[:, 3], -nodes_copy[:, 2], -nodes_copy[:, 1]))
+        nodes_copy = nodes_copy[sort_idx]
+
+        # Embaralhar serviços antes da alocação
+        np.random.shuffle(services_data)
+
         allocated_nodes = set()
         allocations = []
 
@@ -68,12 +75,28 @@ def get_allocation(nodes_data: np.ndarray, services_data: np.ndarray) -> Tuple[L
             ]
 
             if capable_nodes:
-                allocated_node = capable_nodes[0]  # Selecionar o primeiro nó capaz
-                allocated_nodes.add(allocated_node)
-                allocations.append([service_id, allocated_node])
+                # Selecionar o nó que resulta no menor custo composto (recursos residuais + penalização por número de nós alocados)
+                min_residual = float('inf')
+                best_node = None
 
-                # Atualizar recursos do nó
-                node_idx = np.where(nodes_copy[:, 0] == allocated_node)[0][0]
+                for node_id in capable_nodes:
+                    node_idx = np.where(nodes_copy[:, 0] == node_id)[0][0]
+                    cpu_residual = nodes_copy[node_idx, 1] - cpu
+                    mem_residual = nodes_copy[node_idx, 2] - mem
+                    sto_residual = nodes_copy[node_idx, 3] - sto
+                    bw_residual  = nodes_copy[node_idx, 4] - bw
+                    # Penalização pelo número de nós já alocados
+                    residual_sum = cpu_residual + mem_residual + sto_residual + bw_residual + NODE_PENALTY_WEIGHT * len(allocated_nodes)
+
+                    if residual_sum < min_residual:
+                        min_residual = residual_sum
+                        best_node = node_id
+
+                allocated_nodes.add(best_node)
+                allocations.append([service_id, best_node])
+
+                # Atualizar recursos do nó selecionado
+                node_idx = np.where(nodes_copy[:, 0] == best_node)[0][0]
                 nodes_copy[node_idx, 1:] -= [cpu, mem, sto, bw]
 
         # Calcular recursos residuais
@@ -85,7 +108,7 @@ def get_allocation(nodes_data: np.ndarray, services_data: np.ndarray) -> Tuple[L
             best_allocations = allocations
             best_elapsed_time = '{:.8f}'.format(time.time() - start_time)
 
-    return best_allocations, [best_elapsed_time]
+    return best_remaining_resources, best_allocations, [best_elapsed_time]
 
 
 def write_to_csv(filename: str, data):
@@ -109,6 +132,7 @@ def main():
 
     # Inicializar dicionário de alocações
     dict_allocations = {}
+    nodes_allocated_list = []
 
     for i in range(20):  # Processar 20 aplicações
         app_name = f'App{i}'
@@ -121,11 +145,15 @@ def main():
 
         # Alocar serviços nos nós
         nodes_copy = copy.deepcopy(nodes)
-        allocations, elapsed_time = get_allocation(nodes_copy, services_data)
+        remaining_resources, allocations, elapsed_time = get_allocation(nodes_copy, services_data)
 
         # Exibir resultados
         print(f'Allocations: {allocations}')
+        print(f'Remaining resources: {remaining_resources}')
         print(f'Time: {elapsed_time[0]} s\n{"-" * 40}')
+
+        # Criar uma lista
+        nodes_allocated_list.append([remaining_resources])
 
         # Armazenar alocações
         dict_allocations[app_name] = (allocations, elapsed_time)
@@ -135,6 +163,14 @@ def main():
     write_to_csv(output_file, dict_allocations)
     print(f'Results saved to {output_file}')
 
+    print(f'Residual: {nodes_allocated_list}')
+
 
 if __name__ == "__main__":
     main()
+
+
+    # Residual: [[53191], [54894], [52964], [53922], [63717], [53739], [61770], [57221], [54712], [54254], [54204], [63992], [58268], [54843], [50379], [59143], [57738], [53792], [58187], [60004]]
+    # Residual: [[53191], [54894], [52964], [53922], [63717], [53739], [61770], [57221], [54712], [54254], [54204], [63992], [58268], [54843], [50379], [59143], [57738], [53792], [58187], [60004]]
+    # Residual: [[53191], [54894], [52964], [53922], [63717], [53739], [61770], [57221], [54712], [54254], [54204], [63992], [58268], [54843], [50379], [59143], [57738], [53792], [58187], [60004]]
+    # Residual: [[53191], [54894], [52964], [53922], [63717], [53739], [61770], [57221], [54712], [54254], [54204], [63992], [58268], [54843], [50379], [59143], [57738], [53792], [58187], [60004]]

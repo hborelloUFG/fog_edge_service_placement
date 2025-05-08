@@ -1,160 +1,225 @@
 import sys
-import pandas as pd
-import numpy as np
-import random
-import copy
-import time
-import csv
-from typing import Tuple, List, Dict
-
-# Adicionar caminho do módulo
 sys.path.append('modules')
 
-# Configurações globais
-TOPOLOGY = 'germany'
-PATH = 'orign/'
-COLUMNS = ['id', 'cpu', 'memory', 'storage', 'bandwidth']
-CAPACITY_PERCENT = 1.0  # 100%
+import pandas as pd
+import numpy as np 
+import random as rd
+import copy
+import os
 
-# Importar módulo personalizado
-import get_data as gd  # type: ignore
+import datetime
 
-# --------------------------------------------
-# Funções Auxiliares
-# --------------------------------------------
+# ----------------------------------------------------------------------------------
+topology = 'germany'
+path = 'orign/'
+columns = ['id', 'cpu', 'memory', 'storage', 'bandwidth']
 
-def get_data_nodes() -> Tuple[pd.DataFrame, pd.DataFrame, any]:
-    """
-    Obtém os nós e arestas da topologia.
-    """
-    df_nodes, df_edges = gd.get_topology(TOPOLOGY, capacity_percent=CAPACITY_PERCENT)
-    graph = gd.create_graph_topology(df_nodes, df_edges)
-    return df_nodes[COLUMNS], df_edges, graph
+# capacity percent: 0.8 = 80%
+cp = 1.0
+# ----------------------------------------------------------------------------------
+import pyomo.environ as pyo
+from pyomo.environ import *
+from pyomo.opt import SolverFactory
 
+import time
+np.set_printoptions(suppress=True)
 
-def get_data_application(app: str, path: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """
-    Obtém os serviços e a coreografia para uma aplicação específica.
-    """
-    df_services, df_choreography = gd.get_application(app, path)
-    df_services = df_services[COLUMNS]
-    df_services['id'] = range(len(df_services))  # Redefinir IDs sequenciais
-    return df_services, df_choreography
+import get_data as gd # type: ignore
 
-def get_allocation(nodes_data: np.ndarray, services_data: np.ndarray):
-    """
-    Aloca serviços nos nós com base nos recursos residuais, executando 100 tentativas com embaralhamento.
-    Para cada execução, armazena o número de nós distintos alocados.
-    Retorna min_nodes, mean_nodes, std_nodes, mean_time, best_allocations.
-    """
-    T = 100  # Número de tentativas fixo
-    best_allocations = []
-    best_remaining_resources = float('inf')
-    best_elapsed_time = None
-    nodes_allocated_list = []
-    times_list = []
+def get_data_nodes():
+    df_nodes, df_edges = gd.get_topology(topology, capacity_percent=cp)
+    G = gd.create_graph_topology(df_nodes, df_edges)
 
-    start_time = time.time()
+    return df_nodes[columns], df_edges, G
 
-    for _ in range(T):
-        nodes_copy = copy.deepcopy(nodes_data)
-        np.random.shuffle(services_data)  # Embaralhar serviços antes da alocação
-        # Ordenar por CPU, depois memória, storage e bandwidth (colunas 1 a 4)
-        sort_idx = np.lexsort((-nodes_copy[:, 4], -nodes_copy[:, 3], -nodes_copy[:, 2], -nodes_copy[:, 1]))
-        nodes_copy = nodes_copy[sort_idx]
+def get_data_application(app, path):
+    df_services, df_choreog = gd.get_application(app, path)
 
-        allocated_nodes = set()
-        allocations = []
-        iter_start_time = time.time()
+    services = df_services[columns]
+    services.loc[:, 'id'] = range(0, len(services))
 
-        for service_id, cpu, mem, sto, bw in services_data:
-            # Filtrar nós capazes de alocar o serviço
-            capable_nodes = [
-                node_id for node_id, node_cpu, node_mem, node_sto, node_bw in nodes_copy
-                if node_id not in allocated_nodes and
-                cpu <= node_cpu and mem <= node_mem and sto <= node_sto and bw <= node_bw
-            ]
-
-            if capable_nodes:
-                allocated_node = capable_nodes[0]  # Selecionar o primeiro nó capaz
-                allocated_nodes.add(allocated_node)
-                allocations.append([service_id, allocated_node])
-
-                # Atualizar recursos do nó
-                node_idx = np.where(nodes_copy[:, 0] == allocated_node)[0][0]
-                nodes_copy[node_idx, 1:] -= [cpu, mem, sto, bw]
-
-        # Calcular recursos residuais
-        total_remaining_resources = nodes_copy[:, 1:].sum()
-        nodes_allocated_list.append(len(set([alloc[1] for alloc in allocations])))
-        times_list.append(time.time() - iter_start_time)
-        # Atualizar melhor solução se necessário
-        if total_remaining_resources < best_remaining_resources:
-            best_remaining_resources = total_remaining_resources
-            best_allocations = allocations
-            best_elapsed_time = time.time() - start_time
-
-    min_nodes = min(nodes_allocated_list)
-    mean_nodes = float(np.mean(nodes_allocated_list))
-    std_nodes = float(np.std(nodes_allocated_list))
-    mean_time = float(np.mean(times_list))
-    mean_time = float(f"{mean_time:.8f}")
-    return min_nodes, mean_nodes, std_nodes, mean_time, best_allocations
+    return services, df_choreog
 
 
-def write_to_csv(filename: str, data):
-    """
-    Escreve as alocações em um arquivo CSV com cabeçalhos: Application, MinNodes, MeanNodes, StdNodes, MeanTime, BestAllocations.
-    """
-    with open(filename, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(['Application', 'MinNodes', 'MeanNodes', 'StdNodes', 'MeanTime', 'BestAllocations'])
-        for key, val in data.items():
-            min_nodes, mean_nodes, std_nodes, mean_time, best_allocations = val
-            writer.writerow([key, min_nodes, mean_nodes, std_nodes, mean_time, str(best_allocations)])
+def get_nodes_utilization(lines):
+    nodes_utilization = []
+
+    for app_key, allocations in lines.items():
+        # Obtém os serviços da aplicação
+        services_placed, _ = get_data_application(app_key, path)
+
+        # Obtém os índices dos nós alocados
+        allocated_node_indices = list(set([a[1] for a in allocations]))
+
+        # Obtém os dados dos nós alocados
+        nodes_allocated_data = [nodes[n] for n in allocated_node_indices]
+
+        # Soma dos recursos dos serviços e dos nós (ignorando o ID)
+        total_service_resources = np.sum(services_placed.to_numpy().astype('int'), axis=0)
+        total_node_resources = np.sum(nodes_allocated_data, axis=0)
+
+        utilization = np.sum(total_service_resources[1:]) / np.sum(total_node_resources[1:])
+        nodes_utilization.append(utilization)
+
+    keys = list(lines.keys())
+    return nodes_utilization, keys
+
+def get_allocation(nodes_data, services_data, app):
+
+    import copy
+    MAX_TRIALS = 100
+    T = min(MAX_TRIALS, 10 * len(services_data))
+    no_improvement = 0
+    MAX_NO_IMPROVEMENT = 20
+
+    all_best_allocations = []
+    all_best_utilizations = 0.0
+    all_mean_time = None
+    all_mean_utilization = 0.0
+    all_std_utilization = 0.0
+
+    for k in range(MAX_TRIALS):
+
+        # Inicializa variáveis para armazenar a melhor alocação
+        best_allocations = []
+        best_utilization = 0.0
+        time_allocations = []
+        all_utilizations = []
+        mean_time = None
+
+        start_time = time.time()
+        for t in range(T):
+            # Recria os dados para manter independência entre execuções
+            # temp_services = copy.deepcopy(services_data)
+            # temp_nodes = copy.deepcopy(nodes_data)
+
+            temp_services = services_data.copy()
+            temp_nodes = nodes_data.copy()
+
+            # Inicializa listas para cada execução
+            allocated_nodes = []
+            allocated_services = []
+            allocations = []
+
+            # Embaralha os serviços
+            rd.shuffle(temp_services)
+
+            for i in range(len(temp_services)):
+                if i in allocated_services:
+                    continue
+
+                cpu, mem, sto, bw = temp_services[i][1:]
+                able_nodes = []
+
+                for j in range(len(temp_nodes)):
+                    if j in allocated_nodes:
+                        continue
+
+                    node_cpu, node_mem, node_sto, node_bw = temp_nodes[j][1:]
+                    if cpu <= node_cpu and mem <= node_mem and sto <= node_sto and bw <= node_bw:
+                        able_nodes.append(j)
+
+                if len(able_nodes) != 0:
+                    allocated_node = able_nodes[0]
+                    allocated_nodes.append(allocated_node)
+                    allocated_services.append(i)
+                    allocations.append([i, allocated_node])
+
+                    temp_nodes[allocated_node][1] -= cpu
+                    temp_nodes[allocated_node][2] -= mem
+                    temp_nodes[allocated_node][3] -= sto
+                    temp_nodes[allocated_node][4] -= bw
+
+                    for k in range(i+1, len(temp_services)):
+                        if k in allocated_services:
+                            continue
+
+                        cpu_k, mem_k, sto_k, bw_k = temp_services[k][1:]
+                        node_cpu, node_mem, node_sto, node_bw = temp_nodes[allocated_node][1:]
+
+                        if cpu_k <= node_cpu and mem_k <= node_mem and sto_k <= node_sto and bw_k <= node_bw:
+                            allocated_services.append(k)
+                            allocations.append([k, allocated_node])
+
+                            temp_nodes[allocated_node][1] -= cpu_k
+                            temp_nodes[allocated_node][2] -= mem_k
+                            temp_nodes[allocated_node][3] -= sto_k
+                            temp_nodes[allocated_node][4] -= bw_k
+
+            time_allocations.append('{:.8f}'.format(time.time() - start_time))
+            dict_allocations = {app: allocations}
+            utilization, _ = get_nodes_utilization(dict_allocations)
+            all_utilizations.append(utilization[0])
+
+            if utilization[0] > best_utilization:
+                best_utilization = utilization[0]
+                best_allocations = allocations
+                no_improvement = 0
+            else:
+                no_improvement += 1
+                if no_improvement >= MAX_NO_IMPROVEMENT:
+                    break
+        
+        mean_time = np.mean([float(t) for t in time_allocations])
+        # calcule a media de utilização e o seu desvio padrão
+        mean_utilization = np.mean([float(u) for u in all_utilizations])
+        std_utilization = np.std([float(u) for u in all_utilizations])
+
+    if best_utilization > all_best_utilizations:
+        all_best_allocations = best_allocations
+        all_best_utilizations = best_utilization
+        all_mean_time = mean_time
+        all_mean_utilization = mean_utilization
+        all_std_utilization = std_utilization
+    
+    return all_best_allocations, all_mean_time, all_best_utilizations, all_mean_utilization, all_std_utilization
+
+nodes, edges, G = get_data_nodes()
+dict_allocations = dict()
+allocations_dict = dict()
+
+nodes = nodes.to_numpy().astype('int')
+
+for i in range(20):
+    application = 'App' + str(i)
+    # print('Allocation to ', application, path)
+    services, coreog = get_data_application(application, path)
+    print('Allocation to ', application, 'with', len(services), 'services')
+
+    services_data = services.to_numpy().astype('int')
+    services_data = sorted(services_data, key=lambda s: max(s[1], s[2], s[3], s[4]), reverse=True)
+
+    nodes_data = copy.deepcopy(nodes)
+
+    # def get_allocation_greed(nodes_data, services_data, T=1000):
+    best_allocations, time_allocations, best_utilization, mean_utilization, std_utilization = get_allocation(nodes_data, services_data, application)
+
+    # allocations, nodes_allocated, time_allocation, solver_time, status = get_allocation(services, nodes)
+    print('BEST Utilization : ', best_utilization)
+    print('Mean Utilization : ', mean_utilization)
+    print('Std Utilization : ', std_utilization)
+    print('Time : ', time_allocations, 's')
+    print('\n-----------------------------------\n')
+    dict_allocations[application] = best_allocations, time_allocations
+    # write dict_allocations to cvs file
+
+    allocations_dict[application] = [best_utilization, mean_utilization, std_utilization, time_allocations, best_allocations]
 
 
-# --------------------------------------------
-# Execução Principal
-# --------------------------------------------
+# Exporta resultados para CSV
+import csv
+os.makedirs('results', exist_ok=True)
+output_file = f'results/mid/h2_min_residual_{topology}_new.csv'
+with open(output_file, 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(['Application', 'MinNodes', 'MeanNodes', 'StdNodes', 'MeanTime', 'BestAllocations'])
+    for key, val in allocations_dict.items():
+        min_nodes, mean_nodes, std_nodes, mean_time, best_allocations = val
+        writer.writerow([key, min_nodes, mean_nodes, std_nodes, mean_time, str(best_allocations)])
 
-def main():
-    # Obter dados de nós e arestas
-    nodes_df, edges_df, graph = get_data_nodes()
-    nodes = nodes_df.to_numpy().astype('int')
+print(f"Results saved to {output_file}")
 
-    # Inicializar dicionário de alocações
-    dict_allocations = {}
-
-    for i in range(20):  # Processar 20 aplicações
-        app_name = f'App{i}'
-        services_df, choreography_df = get_data_application(app_name, PATH)
-        print(f'Processing {app_name} with {len(services_df)} services...')
-
-        # Preparar dados dos serviços
-        services_data = services_df.to_numpy().astype('int')
-        services_data = sorted(services_data, key=lambda s: max(s[1:]), reverse=True)
-
-        # Alocar serviços nos nós
-        nodes_copy = copy.deepcopy(nodes)
-        min_nodes, mean_nodes, std_nodes, mean_time, best_allocations = get_allocation(nodes_copy, services_data)
-
-        # Exibir resultados
-        print(f'Min nodes: {min_nodes}')
-        print(f'Mean nodes: {mean_nodes}')
-        print(f'Std nodes: {std_nodes}')
-        print(f'Mean time: {mean_time} s')
-        print(f'Best allocations: {best_allocations}')
-        print('-' * 40)
-
-        # Armazenar alocações
-        dict_allocations[app_name] = [min_nodes, mean_nodes, std_nodes, mean_time, best_allocations]
-
-    # Salvar resultados em CSV no formato novo
-    output_file = f'results/mid/h2_min_residual_{TOPOLOGY}_new.csv'
-    write_to_csv(output_file, dict_allocations)
-    print(f'Results saved to {output_file}')
-
-
-if __name__ == "__main__":
-    main()
+# # dict to csv
+# w = csv.writer(open('results/mid/h2_min_residual_'+topology+'_new.csv', 'w'))
+# for key, val in dict_allocations.items():
+#     w.writerow([key, val])
